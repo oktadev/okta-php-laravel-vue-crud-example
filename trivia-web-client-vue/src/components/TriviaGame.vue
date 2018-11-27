@@ -20,6 +20,8 @@
                         <td>{{ player.answers }}</td>
                         <td>{{ player.points }}</td>
                         <td>
+                        <button class="button is-primary" v-bind:class="{ 'is-loading' : isCountUpdating(player.id) }" @click="answer(player.id, true)">(+1) Right</button>&nbsp;
+                        <button class="button is-primary" v-bind:class="{ 'is-loading' : isCountUpdating(player.id) }" @click="answer(player.id, false)">(-1) Wrong</button>&nbsp;
                         <button class="button is-primary" v-bind:class="{ 'is-loading' : isDeleting(player.id) }" @click="deletePlayer(player.id)">Delete Player</button>
                         </td>
                     </tr>
@@ -107,6 +109,21 @@ export default {
             Vue.set(this.players[index], 'isDeleting', true)
             const response = await axios.delete(API_BASE_URL + '/players/' + id)
             this.players.splice(index, 1)
+        },
+        isCountUpdating(id) {
+            let index = this.players.findIndex(player => player.id === id)
+            return this.players[index].isCountUpdating
+        },
+        async answer(id, isCorrectAnswer) {
+            let data = {
+                correct: isCorrectAnswer
+            }
+            let index = this.players.findIndex(player => player.id === id)
+            Vue.set(this.players[index], 'isCountUpdating', true)
+            const response = await axios.post(API_BASE_URL + '/players/' + id + '/answers', data)
+            this.players[index].answers = response.data.data.answers
+            this.players[index].points = response.data.data.points
+            this.players[index].isCountUpdating = false
         }
     }
 }
