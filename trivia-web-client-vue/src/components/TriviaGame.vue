@@ -1,7 +1,7 @@
 <template>
-    <div>
-        <div v-if="isLoading">Loading players...</div>
-        <div v-else>
+    <div class="columns">
+        <div class="column" v-if="isLoading">Loading players...</div>
+        <div class="column" v-else>
         <table class="table">
             <thead>
                 <tr>
@@ -28,12 +28,30 @@
         </table>
         <player-form @completed="addPlayer"></player-form>
         </div>
+        <div class="column">
+            <div class="card" v-if="question">
+                <div class="card-content">
+                    <button class="button is-primary" @click="getQuestion()">Refresh Question</button>
+                    <p class="title">
+                        {{ question.question }}
+                    </p>
+                    <p class="subtitle">
+                        {{ question.category.title }}
+                    </p>
+                </div>
+                <footer class="card-footer">
+                    <p class="card-footer-item">
+                        <span>Correct answer: {{ question.answer }}</span>
+                    </p>
+                </footer>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
 import axios from 'axios'
-import { API_BASE_URL } from '../config'
+import { API_BASE_URL, TRIVIA_ENDPOINT } from '../config'
 import PlayerForm from './PlayerForm.vue'
 import Vue from 'vue'
 
@@ -44,10 +62,12 @@ export default {
     data() {
         return {
             isLoading: true,
+            question: null,
             players: {}
         }
     },
     async created () {
+        this.getQuestion()
         axios.defaults.headers.common['Authorization'] = `Bearer ${await this.$auth.getAccessToken()}`
         try {
             const response = await axios.get(API_BASE_URL + '/players')
@@ -58,6 +78,23 @@ export default {
         }
     },
     methods: {
+        async getQuestion() {
+            delete axios.defaults.headers.common.Authorization
+            this.doGetQuestion()
+            axios.defaults.headers.common['Authorization'] = `Bearer ${await this.$auth.getAccessToken()}`
+        },
+        async doGetQuestion() {
+            try {
+                const response = await axios.get(TRIVIA_ENDPOINT, {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                })
+                this.question = response.data[0]
+            } catch (e) {
+                // handle errors here
+            }
+        },
         addPlayer(player) {
             this.players.push(player)
         },
