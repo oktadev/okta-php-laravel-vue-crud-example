@@ -24,7 +24,7 @@
                 </template>
             </tbody>
         </table>
-        <a class="button is-primary">Add Player</a>
+        <player-form @completed="addPlayer"></player-form>
         </div>
     </div>
 </template>
@@ -32,8 +32,12 @@
 <script>
 import axios from 'axios'
 import { API_BASE_URL } from '../config'
+import PlayerForm from './PlayerForm.vue'
 
 export default {
+    components: {
+        PlayerForm
+    },
     data() {
         return {
             isLoading: true,
@@ -48,6 +52,11 @@ export default {
             this.isLoading = false
         } catch (e) {
             // handle the authentication error here
+        }
+    },
+    methods: {
+        addPlayer(player) {
+            this.players.push(player)
         }
     }
 }
