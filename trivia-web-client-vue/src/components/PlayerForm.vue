@@ -8,7 +8,7 @@
             </div>
         </div>
 
-        <button class="button is-primary" v-bind:class="{ 'is-loading' : isLoading }">Add Movie</button>
+        <button class="button is-primary" v-bind:class="{ 'is-loading' : isLoading }">Add Player</button>
     </form>
 </template>
 
