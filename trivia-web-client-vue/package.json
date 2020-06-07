@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@okta/okta-vue": "^1.0.7",
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "vue": "^2.5.17"
   },
   "devDependencies": {
