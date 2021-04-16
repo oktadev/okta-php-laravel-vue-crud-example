@@ -8,8 +8,8 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@okta/okta-vue": "^1.0.7",
-    "axios": "^0.18.1",
+    "@okta/okta-vue": "^3.1.0",
+    "axios": "^0.21.1",
     "vue": "^2.5.17"
   },
   "devDependencies": {

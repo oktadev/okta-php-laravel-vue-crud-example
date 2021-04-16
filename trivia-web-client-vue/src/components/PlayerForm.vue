@@ -30,7 +30,7 @@ export default {
             this.postPlayer()
         },
         async postPlayer() {
-            axios.defaults.headers.common['Authorization'] = `Bearer ${await this.$auth.getAccessToken()}`
+            axios.defaults.headers.common['Authorization'] = `Bearer ${this.$auth.getAccessToken()}`
             axios.post(API_BASE_URL + '/players', this.$data)
                 .then(response => {
                     this.name = ''
