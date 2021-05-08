@@ -1,22 +1,23 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import { OktaAuth } from '@okta/okta-auth-js'
+import OktaVue, { LoginCallback } from '@okta/okta-vue'
+import Dashboard from './components/Dashboard.vue'
+import TriviaGame from './components/TriviaGame.vue'
+
+const oktaAuth = new OktaAuth({
+  issuer: 'https://dev-354685.oktapreview.com/oauth2/default',
+  clientId: '0oahuzil3ucrOYmc20h7',
+  redirectUri: window.location.origin + '/callback',
+  scopes: ['openid', 'profile', 'email']
+})
+Vue.use(OktaVue, { oktaAuth })
 
 Vue.config.productionTip = false
 Vue.use(VueRouter)
 
-import Dashboard from './components/Dashboard.vue'
-import TriviaGame from './components/TriviaGame.vue'
-import Auth from '@okta/okta-vue'
-
-Vue.use(Auth, {
-  issuer: 'https://dev-354685.oktapreview.com/oauth2/default',
-  client_id: '0oahuzil3ucrOYmc20h7',
-  redirect_uri: 'http://localhost:8080/implicit/callback',
-  scope: 'openid profile email'
-})
-
 const routes = [
-  { path: '/implicit/callback', component: Auth.handleCallback() },
+  { path: '/callback', component: LoginCallback },
   { path: '/trivia', component: TriviaGame }
 ]
 

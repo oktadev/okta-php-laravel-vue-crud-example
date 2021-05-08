@@ -70,7 +70,7 @@ export default {
     },
     async created () {
         this.getQuestion()
-        axios.defaults.headers.common['Authorization'] = `Bearer ${await this.$auth.getAccessToken()}`
+        axios.defaults.headers.common['Authorization'] = `Bearer ${this.$auth.getAccessToken()}`
         try {
             const response = await axios.get(API_BASE_URL + '/players')
             this.players = response.data.data
@@ -83,7 +83,7 @@ export default {
         async getQuestion() {
             delete axios.defaults.headers.common.Authorization
             this.doGetQuestion()
-            axios.defaults.headers.common['Authorization'] = `Bearer ${await this.$auth.getAccessToken()}`
+            axios.defaults.headers.common['Authorization'] = `Bearer ${this.$auth.getAccessToken()}`
         },
         async doGetQuestion() {
             try {
